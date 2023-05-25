@@ -63,6 +63,12 @@ module Spaceship
         return resp.to_models.first
       end
 
+      def self.create(client: nil, name: nil, platform: nil, identifier: nil, seed_id: nil, bundle_type: nil, parent_bundle_id: nil)
+        client ||= Spaceship::ConnectAPI
+        resp = client.post_bundle_id(name: name, platform: platform, identifier: identifier, seed_id: seed_id, bundle_type: bundle_type, parent_bundle_id: parent_bundle_id)
+        return resp.to_models.first
+      end
+
       #
       # BundleIdsCapabilities
       #

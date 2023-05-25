@@ -45,6 +45,52 @@ module Spaceship
           provisioning_request_client.post("bundleIds", body)
         end
 
+        def post_bundle_id(name:, platform:, identifier:, seedId:, bundle_type:, parent_bundle_id:)
+          attributes = {
+            name: name,
+            platform: platform,
+            identifier: identifier,
+            seedId: seed_id,
+            bundleType: bundle_type
+          }
+
+          body = {
+            data: {
+              attributes: attributes,
+              type: "bundleIds",
+              relationships: {
+                bundleIdCapabilities: {
+                  data: [
+                    {
+                      type: "bundleIdCapabilities",
+                      attributes: {
+                        enabled: true,
+                        settings: []
+                      },
+                      relationships: {
+                        capability: {
+                          data: {
+                            type: "capabilities",
+                            id: "ON_DEMAND_INSTALL_CAPABLE"
+                          }
+                        },
+                        parentBundleId: {
+                          data: {
+                            type: "bundleIds",
+                            id: parent_bundle_id
+                          }
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          }
+
+          provisioning_request_client.post("bundleIds", body)
+        end
+
         #
         # bundleIdCapability
         #
